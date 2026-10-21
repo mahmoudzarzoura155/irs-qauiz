@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapters 1 &amp; 2 — Recommender Systems Quiz</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--text:#182230;--muted:#637083;--line:#dce3ec;--accent:#3157d5;--accent-light:#edf1ff;--good:#16794b;--good-bg:#eaf8f0;--bad:#b42318;--bad-bg:#fff0ef}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:28px 16px 56px}.hero{background:linear-gradient(135deg,#203a8f,#4169e1);color:#fff;border-radius:20px;padding:28px;margin-bottom:20px;box-shadow:0 10px 28px #203a8f20}
+.hero h1{margin:0 0 8px;font-size:clamp(1.5rem,4vw,2.1rem)}.hero p{margin:0;color:#e8edff}.topline{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin:16px 0 8px;color:var(--muted);font-size:.94rem}.progress{height:8px;background:#e1e7f0;border-radius:99px;overflow:hidden;margin-bottom:20px}.progress div{height:100%;width:0;background:var(--accent);transition:width .2s}
+.section-title{font-size:1.08rem;margin:28px 0 12px;color:#31415a}
+.question{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:20px;margin:12px 0;box-shadow:0 3px 10px #17255406}.qhead{display:flex;gap:10px;align-items:flex-start}.num{display:inline-flex;align-items:center;justify-content:center;flex:0 0 36px;height:36px;border-radius:10px;background:var(--accent-light);color:var(--accent);font-weight:800}.qtext{font-weight:700;padding-top:5px}.options{display:grid;gap:9px;margin-top:15px}.option{display:flex;align-items:flex-start;gap:10px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer;transition:.15s}.option:hover{border-color:#8ea3ef;background:#f8f9ff}.option input{margin-top:5px;accent-color:var(--accent);flex:0 0 auto}.option:has(input:checked){border-color:var(--accent);background:var(--accent-light)}
+.option.show-correct{border-color:#8bc8a7;background:var(--good-bg)}
+.option.show-correct .letter::after{content:" ✓";color:var(--good)}
+.feedback{display:none;margin-top:13px;padding:11px 13px;border-radius:10px;font-size:.94rem}.feedback.show{display:block}.feedback.correct{background:var(--good-bg);color:var(--good)}.feedback.wrong{background:var(--bad-bg);color:var(--bad)}.actions{display:flex;gap:10px;flex-wrap:wrap;position:sticky;bottom:12px;background:#f4f7fbeF;padding:12px 0;margin-top:22px;backdrop-filter:blur(8px)}
+button{border:0;border-radius:11px;padding:12px 18px;font:inherit;font-weight:750;cursor:pointer}.primary{background:var(--accent);color:#fff}.secondary{background:#e4e9f2;color:#263449}.primary:hover{background:#2447bd}.secondary:hover{background:#d7dfeb}
+#results{display:none;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;margin-top:22px}#results.show{display:block}.score{font-size:2rem;font-weight:850;color:var(--accent)}.result-sub{color:var(--muted)}.small{font-size:.9rem;color:var(--muted)}@media(max-width:540px){.wrap{padding:16px 10px 36px}.hero{padding:22px 18px}.question{padding:15px}.actions button{flex:1}.option{padding:10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+<h1>Chapters 1 & 2: Recommender Systems</h1>
+<p>Multiple Choice Quiz · 60 Questions</p>
+</header>
+<div class="topline"><span id="answered">Answered: 0 / 60</span><span id="pct">0% complete</span></div>
+<div class="progress"><div id="bar"></div></div>
+<form id="quiz">
+<div id="questions"></div>
+<div class="actions">
+<button type="submit" class="primary">Submit Quiz</button>
+<button type="button" class="secondary" id="reset">Reset Quiz</button>
+</div>
+</form>
+<section id="results" aria-live="polite"></section>
+<p class="small">Your answers are checked in this page. Select an option to see feedback immediately, or Submit to calculate final score.</p>
+</div>
+<script>
+const data = [
+{section:"Section 1: Introduction and Problem Domain",q:"What is the primary objective of a Recommender System (RS)?",o:["To store large amounts of information","To match users with relevant items","To replace online shopping platforms","To organize products alphabetically"],a:1},
+{q:"A customer is overwhelmed by hundreds of available digital cameras. How can a recommender system help?",o:["By displaying every camera available","By removing product descriptions","By reducing information overload through relevant suggestions","By recommending only the most expensive cameras"],a:2},
+{q:"According to the definition presented in the chapter, recommender systems are software agents that:",o:["Elicit consumers' interests and preferences to make recommendations","Recommend products randomly","Automatically purchase products for customers","Focus only on predicting product prices"],a:0},
+{q:"Which of the following is NOT identified as a main role of recommender systems in the problem domain?",o:["Guidance","Advisory assistance","Persuasion","Data encryption"],a:3},
+{q:"The selection of a recommender system design or paradigm depends mainly on:",o:["The number of website pages","The programming language used","Available exploitable data, user feedback, and domain characteristics","The geographical location of the server"],a:2},
+{section:"Section 2: Purpose and Success Criteria",q:"Why is there no single holistic evaluation scenario for all recommender systems?",o:["Because recommendation accuracy is never important","Because success criteria depend on the application domain and purpose","Because all systems produce identical recommendations","Because users never provide feedback"],a:1},
+{q:"Which scenario best represents the Retrieval Perspective?",o:["A user knows what type of product they need and receives relevant search results","A user discovers an unknown movie unexpectedly","A system recommends items popular among similar users","A website increases advertising revenue"],a:0},
+{q:"The retrieval perspective primarily aims to:",o:["Increase the number of available products","Maximize sales margins","Reduce search costs and provide correct proposals","Recommend products users have never heard of"],a:2},
+{q:"A music platform suggests a little-known song that a user has never encountered but genuinely enjoys. Which perspective does this represent?",o:["Retrieval perspective","Conversion perspective","Prediction perspective","Recommendation perspective"],a:3},
+{q:"What does serendipity mean in the context of recommender systems?",o:["Recommending only popular products","Helping users discover relevant items they did not previously know about","Displaying products in alphabetical order","Recommending the same item repeatedly"],a:1},
+{q:"In the Long Tail distribution illustrated in the chapter, the long tail represents:",o:["A large collection of individually less-popular items","Only the most frequently rated products","Products with the highest prices","Items that must never be recommended"],a:0},
+{q:"According to the MovieLens 100K example in the chapter, approximately what percentage of items accumulated 74% of positive ratings?",o:["5%","50%","20%","80%"],a:2},
+{q:"Which perspective is described as the most popular evaluation scenario in recommender systems research?",o:["Interaction perspective","Retrieval perspective","Conversion perspective","Prediction perspective"],a:3},
+{q:"A recommender system estimates how much a particular user will like a movie. This is an example of:",o:["Conversion optimization","Preference prediction","Sales persuasion","Information retrieval only"],a:1},
+{q:"Which of the following is a goal of the Interaction Perspective?",o:["Eliminate all user choices","Maximize the number of advertisements","Educate users about the product domain and improve their experience","Reduce the number of product categories"],a:2},
+{q:"An online store explains why a particular laptop is suitable for a customer's needs. This explanation primarily supports:",o:["The interaction perspective","The prediction perspective only","The retrieval perspective only","Data storage optimization"],a:0},
+{q:"Which metric is most closely associated with the Conversion Perspective?",o:["Number of stored user profiles","Number of available product descriptions","Amount of training data","Clickthrough and lookers-to-bookers rates"],a:3},
+{q:"Which objective is particularly relevant when evaluating recommender systems in commercial environments?",o:["Increasing the number of database tables","Optimizing sales margins and profit","Reducing the number of registered users","Avoiding all interaction with customers"],a:1},
+{section:"Section 3: Recommender Systems as a Function",q:"Which of the following may be included in a user model?",o:["Ratings, preferences, demographics, and situational context","Product prices only","Server specifications only","Programming algorithms only"],a:0},
+{q:"According to the chapter, the items provided to a recommender system:",o:["Must always contain complete descriptions","Must always have user ratings","May be represented with or without descriptions of their characteristics","Must belong to the same product category"],a:2},
+{q:"When a recommender system is viewed as a function, its main output is:",o:["A new user account","A relevance score for an item","A product manufacturing plan","An encrypted database"],a:1},
+{q:"What is the main purpose of the relevance scores generated by a recommender system?",o:["To determine the user's password","To calculate the size of the database","To remove all unpopular items","To rank items according to their estimated relevance"],a:3},
+{q:"Information Retrieval (IR), as defined in the chapter, is primarily concerned with:",o:["Maximizing profit from online transactions","Discovering hidden user demographics","Finding relevant material, often unstructured, that satisfies an information need","Predicting the commercial price of products"],a:2},
+{section:"Section 4: Paradigms of Recommender Systems",q:"Which combination is directly associated with personalized recommendations in the chapter's diagrams?",o:["User profile and contextual parameters","Server location and storage capacity","Random product selection","Website colors and layout"],a:0},
+{q:"A streaming service recommends a movie because users with similar interests enjoyed it. Which paradigm is being used?",o:["Content-based filtering","Knowledge-based recommendation","Collaborative filtering","Information retrieval"],a:2},
+{q:"Which type of input is specifically associated with Collaborative Filtering in the chapter's diagrams?",o:["Product manufacturing costs","Community data","Product descriptions only","Knowledge models only"],a:1},
+{q:"A user frequently watches science-fiction movies. A platform recommends other movies with similar genres and characteristics. Which paradigm best describes this recommendation?",o:["Collaborative filtering","Knowledge-based recommendation","Conversion-based filtering","Content-based filtering"],a:3},
+{q:"Which of the following is an example of product features used in Content-Based Filtering, as illustrated in the chapter?",o:["Title, genre, and actors","The total number of website visitors","User passwords and account identifiers","Server performance measurements"],a:0},
+{q:"A customer specifies their budget and desired product requirements. A system uses knowledge about product characteristics and constraints to recommend a suitable option. Which paradigm is most appropriate?",o:["Collaborative filtering","Content-based filtering","Knowledge-based recommendation","Random recommendation"],a:2},
+{q:"What is the defining characteristic of Hybrid Recommender Systems?",o:["They depend exclusively on community ratings","They combine different inputs and/or recommendation mechanisms","They ignore product characteristics","They recommend only the most popular products"],a:1},
+{section:"Chapter 2: Collaborative Filtering — Section 1: Foundations and User-Based Collaborative Filtering",q:"Which principle best describes the basic approach of collaborative filtering?",o:["Using the wisdom of the crowd to recommend items","Recommending items only from their descriptions","Selecting items randomly","Matching products only by price"],a:0},
+{q:"Which assumption underlies user-based collaborative filtering?",o:["All customers always give identical ratings","Users with similar tastes in the past tend to have similar tastes in the future","Users change their preferences after every purchase","Only highly popular items can be recommended"],a:1},
+{q:"What is the input required by a pure collaborative filtering approach?",o:["Complete textual descriptions of every item","A knowledge base of expert rules","A matrix of user-item ratings","A demographic survey only"],a:2},
+{q:"Which pair correctly identifies the possible outputs of pure collaborative filtering?",o:["A product catalog and a user password","A purchase invoice and a sales report","A clustering diagram and an item description","A numerical rating prediction and a top-N recommendation list"],a:3},
+{q:"In user-based nearest-neighbor collaborative filtering, the neighbors of an active user are:",o:["The most recently registered customers","Users with similar historical preference patterns","Items with the same price","Customers selected without comparing preferences"],a:1},
+{q:"What is the possible range of the Pearson correlation similarity measure?",o:["0 to 100","0 to 1 only","-1 to +1","-5 to +5"],a:2},
+{q:"In the chapter's Alice example, which user has the highest positive Pearson similarity with Alice?",o:["User1 (0.85)","User2 (0.00)","User3 (0.70)","User4 (-0.79)"],a:0},
+{q:"A common user-based prediction function uses neighboring users' ratings mainly by:",o:["Taking the highest neighbor rating without adjustment","Combining similarity-weighted deviations from neighbors' average ratings","Choosing the lowest available rating","Counting the number of items without ratings"],a:1},
+{q:"What is the purpose of significance weighting in user similarity calculations?",o:["To give extra importance to every unrated item","To make all similarities equal to one","To reduce the influence of similarity estimates based on very few co-rated items","To eliminate all users who give low ratings"],a:2},
+{section:"Chapter 2 — Section 2: Memory-Based, Model-Based, and Item-Based Filtering",q:"Why is traditional user-based collaborative filtering called memory-based?",o:["It directly uses the rating matrix to find neighbors and make predictions","It stores only images of products","It never consults past user ratings","It requires no rating information"],a:0},
+{q:"Which statement correctly describes model-based collaborative filtering?",o:["It performs every prediction using only the full rating matrix","It never needs updates after initial installation","It cannot use machine learning techniques","It learns a model in a preprocessing phase and uses the learned model at runtime"],a:3},
+{q:"What is the main idea of item-based collaborative filtering?",o:["Identify customers who live near one another","Use similarities between items to make rating predictions","Remove items with similar characteristics","Recommend all items with equal probability"],a:1},
+{q:"How is standard cosine similarity between rating vectors determined?",o:["By comparing users' ages","By counting only negative reviews","By using the angle between vectors","By measuring item prices"],a:2},
+{q:"What does adjusted cosine similarity take into account?",o:["Users' average ratings when comparing items","Only the average item price","The number of website advertisements","Only the number of available products"],a:0},
+{q:"What was a key preprocessing strategy described for Amazon's item-based filtering approach?",o:["Recompute every pairwise similarity for every page visit","Use only one neighbor for all users","Discard all historical purchases","Calculate item-to-item similarities in advance"],a:3},
+{section:"Chapter 2 — Section 3: Rating Data, Sparsity, and Cold Start",q:"Which scales are presented as common examples of explicit ratings?",o:["Yes/no labels only","1-to-5 or 1-to-7 rating scales","Only continuous measurements from 0 to 100","An unlimited alphabetic scale"],a:1},
+{q:"Which of the following can be an implicit rating signal?",o:["A directly entered five-star score only","A manually written product review only","Clicks, page views, or purchases","A similarity coefficient calculated by Pearson"],a:2},
+{q:"Why must implicit feedback be interpreted cautiously?",o:["A purchase may have been a gift and may not indicate personal liking","Implicit feedback always contains precise preference scores","It cannot be collected without a survey","Every page view is necessarily a positive rating"],a:0},
+{q:"Why can sparse user-item rating matrices reduce recommendation quality?",o:["They contain too many complete item descriptions","They always produce high similarity scores","They automatically eliminate the cold-start problem","Too few common ratings may be available to identify reliable neighbors"],a:3},
+{q:"What does the cold-start problem refer to?",o:["The inability to sort a complete rating matrix","The difficulty of recommending for new users or new items with insufficient information","The use of an old operating system","The need to train every user to write code"],a:1},
+{q:"Which approach is suggested for an initial phase when collaborative ratings are insufficient?",o:["Ban newly registered users","Ignore all available item content","Ask users to rate some items or initially use content-based, demographic, or non-personalized recommendations","Replace all historical ratings with zero"],a:2},
+{q:"What is the basic idea of Recursive Collaborative Filtering for sparse data?",o:["Predict a missing rating for a close neighbor and use that estimate in a further prediction","Remove the nearest neighbors from the rating matrix","Recommend only items with no ratings","Require every user to rate all items before predictions"],a:0},
+{q:"In graph-based spreading activation, considering longer paths is intended to:",o:["Restrict recommendations to directly connected items only","Remove all indirect relationships","Calculate only item prices","Exploit indirect user-item associations that may be useful in sparse datasets"],a:3},
+{section:"Chapter 2 — Section 4: Advanced Methods, Evaluation, and Applications",q:"What is a central purpose of Singular Value Decomposition (SVD) in collaborative recommendation?",o:["To replace all numerical ratings with words","To obtain a lower-dimensional representation that captures important latent factors","To guarantee identical recommendations for every user","To determine which items have the lowest prices"],a:1},
+{q:"In the chapter's association-rule example, Item1 → Item5 has confidence 2/2. What is its confidence?",o:["25%","50%","100%","200%"],a:2},
+{q:"What do the probabilistic recommendation methods described in the chapter aim to estimate?",o:["Probabilities of possible user ratings or item preferences","Only the storage capacity of the rating matrix","The purchase price of every item","The total number of system administrators"],a:0},
+{q:"In the Slope One example, Alice rates Item1 as 2 and another user rates Item1 as 1 and Item5 as 2. What is Alice's predicted rating for Item5?",o:["1","2","4","3"],a:3},
+{q:"What type of information is central to the RF-Rec prediction approach?",o:["Only the text of product descriptions","How frequently particular rating values are assigned by a user and to an item","Only the user's geographical location","The total revenue of the website"],a:1},
+{q:"Compared with Mean Absolute Error (MAE), Root Mean Square Error (RMSE) places greater emphasis on:",o:["The number of product categories","The length of item descriptions","Larger differences between predicted and actual ratings","The age of the recommender system"],a:2},
+{q:"According to the Google News example, personalized recommendations use:",o:["The active user's click history together with the click history of the larger community","Only a fixed list of globally popular articles","Only explicit five-star ratings","Product descriptions without any user interaction"],a:0}
+];
+const letters=["A","B","C","D"];
+const host=document.getElementById("questions");
+let globalNum=0;
+
+data.forEach((item,i)=>{
+ if(item.section){const h=document.createElement("h2");h.className="section-title";h.textContent=item.section;host.appendChild(h);}
+ globalNum++;
+ const card=document.createElement("article");card.className="question";card.id="qcard"+i;
+ const head=document.createElement("div");head.className="qhead";
+ const num=document.createElement("span");num.className="num";num.textContent="Q"+globalNum;
+ const question=document.createElement("div");question.className="qtext";question.textContent=item.q;
+ head.append(num,question);card.appendChild(head);
+ const opts=document.createElement("div");opts.className="options";
+ item.o.forEach((choice,j)=>{
+  const label=document.createElement("label");
+  label.className="option";
+  label.id="opt_"+i+"_"+j;
+  const input=document.createElement("input");input.type="radio";input.name="q"+i;input.value=j;
+  input.addEventListener("change",()=>{
+    handleSingleAnswer(i, j);
+    updateProgress();
+  });
+  const letter=document.createElement("span");letter.className="letter";letter.textContent=letters[j]+".";
+  const text=document.createElement("span");text.textContent=choice;
+  label.append(input,letter,text);opts.appendChild(label);
+ });
+ card.appendChild(opts);
+ const feedback=document.createElement("div");feedback.className="feedback";feedback.id="feedback"+i;
+ card.appendChild(feedback);
+ host.appendChild(card);
+});
+
+function handleSingleAnswer(qIndex, chosenVal){
+  const item = data[qIndex];
+  const feedback = document.getElementById("feedback"+qIndex);
+  const inputs = document.querySelectorAll('input[name="q'+qIndex+'"]');
+  
+  inputs.forEach(x => x.disabled = true);
+  
+  // Show correct styling on the actual correct option only after answering
+  const correctOptionLabel = document.getElementById("opt_" + qIndex + "_" + item.a);
+  if(correctOptionLabel){
+    correctOptionLabel.classList.add("show-correct");
+  }
+
+  feedback.className = "feedback show";
+  if(chosenVal === item.a){
+    feedback.classList.add("correct");
+    feedback.textContent = "Correct!";
+  } else {
+    feedback.classList.add("wrong");
+    feedback.textContent = "Incorrect. Correct answer: " + letters[item.a] + ". " + item.o[item.a];
+  }
+  
+  document.querySelectorAll('#qcard'+qIndex+' .option').forEach(el => el.style.cursor = "default");
+}
+
+function updateProgress(){
+ const count=data.filter((_,i)=>document.querySelector('input[name="q'+i+'"]:checked')).length;
+ document.getElementById("answered").textContent=`Answered: ${count} / ${data.length}`;
+ const p=Math.round(count/data.length*100);document.getElementById("pct").textContent=p+"% complete";
+ document.getElementById("bar").style.width=p+"%";
+}
+
+document.getElementById("quiz").addEventListener("submit",e=>{
+ e.preventDefault();let score=0,answered=0;
+ data.forEach((item,i)=>{
+  const chosen=document.querySelector('input[name="q'+i+'"]:checked');
+  const feedback=document.getElementById("feedback"+i);
+  const inputs=document.querySelectorAll('input[name="q'+i+'"]');
+  inputs.forEach(x=>x.disabled=true);
+
+  const correctOptionLabel = document.getElementById("opt_" + i + "_" + item.a);
+  if(correctOptionLabel){
+    correctOptionLabel.classList.add("show-correct");
+  }
+
+  feedback.className = "feedback show";
+  if(chosen) answered++;
+  if(chosen && Number(chosen.value)===item.a){
+   score++;
+   feedback.classList.add("correct");
+   feedback.textContent="Correct!";
+  }else{
+   feedback.classList.add("wrong");
+   feedback.textContent=(chosen?"Incorrect. ":"Not answered. ")+"Correct answer: "+letters[item.a]+". "+item.o[item.a];
+  }
+ });
+ const results=document.getElementById("results");results.className="show";
+ const percent=Math.round(score/data.length*100);
+ results.innerHTML=`<h2>Quiz Results</h2><div class="score">${score} / ${data.length} (${percent}%)</div><p class="result-sub">You answered ${answered} of ${data.length} questions.</p><p>${percent>=85?"Excellent work!":percent>=70?"Good job—review the questions you missed.":percent>=50?"Keep practicing and review the correct answers below.":"Review the chapter and try again to improve your score."}</p>`;
+ results.scrollIntoView({behavior:"smooth",block:"start"});
+ document.querySelectorAll(".option").forEach(el=>el.style.cursor="default");
+});
+
+document.getElementById("reset").addEventListener("click",()=>{
+ document.getElementById("quiz").reset();
+ document.querySelectorAll("input[type=radio]").forEach(x=>x.disabled=false);
+ document.querySelectorAll(".option").forEach(el=>{
+   el.classList.remove("show-correct");
+   el.style.cursor="pointer";
+ });
+ document.querySelectorAll(".feedback").forEach(x=>{x.className="feedback";x.textContent="";});
+ const results=document.getElementById("results");results.className="";results.innerHTML="";
+ updateProgress();window.scrollTo({top:0,behavior:"smooth"});
+});
+updateProgress();
+</script>
+</body>
+</html>
